@@ -73,16 +73,23 @@ class ArticleController extends Controller
     }
 
     public function showAll()
-    {
-        //$articles = Article::all();
-        $articles = Article::with(['categories', 'user'])
-        ->get(['id', 'title', 'content', 'user_id', 'continent', 'country', 'main_picture']);
+    {   
+        try {
+             //$articles = Article::all();
+            $articles = Article::with(['categories', 'user'])
+            ->get(['id', 'title', 'content', 'user_id', 'continent', 'country', 'main_picture']);
 
-        return response()->json([
-            'message' => 'getting all articles, success !',
-            'articles' => $articles,
-            //'categories' => $categories,
-        ]);
+            return response()->json([
+                'message' => 'getting all articles, success !',
+                'articles' => $articles,
+                //'categories' => $categories,
+            ]);
+        } catch(\Exception $e) {
+            return response()->json([
+                'message' => 'Error in retrieving all articles !! : ' . $e->getMessage(),
+            ], 500);
+        }
+       
     }
 
     public function showMyArticles(Request $request)
@@ -107,7 +114,7 @@ class ArticleController extends Controller
             ]);
         } catch(\Exception $e) {
             return response()->json([
-                'message' => 'Error in retrieving all article: ' . $e->getMessage(),
+                'message' => 'Error in retrieving this article: ' . $e->getMessage(),
             ], 500);
         }
     }
