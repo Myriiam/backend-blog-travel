@@ -93,17 +93,23 @@ class ArticleController extends Controller
 
     public function showArticle($id)
     {
-        $article = Article::find($id);
-        $categories = $article->categories;
-        $user_id = $article->user_id;
-        $author = User::find($user_id); //author of the article
+        try {
+            $article = Article::find($id);
+            $categories = $article->categories;
+            $user_id = $article->user_id;
+            $author = User::find($user_id); //author of the article
 
-        return response()->json([
-            'message' => 'this is the article you have clicked on !',
-            'article' => $article,
-            //'categories' => $categories,
-            'author' => $author,
-        ]);
+            return response()->json([
+                'message' => 'this is the article you have clicked on !',
+                'article' => $article,
+                //'categories' => $categories,
+                'author' => $author,
+            ]);
+        } catch(\Exception $e) {
+            return response()->json([
+                'message' => 'Error in retrieving all article: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function editArticle($id)
