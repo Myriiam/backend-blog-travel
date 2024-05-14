@@ -65,4 +65,13 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    /**
+     * Get the artcile(s) of the user - relationship
+     */
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+        //OR return $this->hasMany('App\Models\Article');
+    }
+
 }

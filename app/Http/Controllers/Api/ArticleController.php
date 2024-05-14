@@ -2,36 +2,120 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Article;
+use App\Models\Category;
+use App\Models\User;
+
 
 class ArticleController extends Controller
-{
+{   
+    public function getCategories() {
+        $categories = Category::all();
+        return response()->json([
+            'categories' =>  $categories,
+        ]);
+    }
+
     public function addArticle(Request $request)
     {
-      //
-  
+        //var_dump(Auth::user()->id);
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'content' => 'required|string|max:255',
+            'continent' => 'required|string',
+            'country' => 'required|string',
+            'main_picture' => 'required|image',
+            'categories' => 'required|array|min:1',
+            'categories.*' => 'exists:categories,id'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+    
+        try {
+            $user_id = Auth::user()->id;
+
+            $article = new Article();
+            $title = $request->input('title');
+            $content = $request->input('content');
+            $continent = $request->input('continent');
+            $country = $request->input('country');
+
+        if ($request->hasFile('main_picture')) {
+                
+                $path = $request->file('main_picture')->store('pictures');
+                $article->main_picture = $path;
+        }
+            //Save article's data in the database
+            $article->user_id = $user_id;
+            $article->title = $title;
+            $article->content = $content;
+            $article->continent = $continent;
+            $article->country = $country;
+            $article->save();
+            //To link one or more tan one categories to the article
+            $article->categories()->attach($request->categories);
+            
+            return response()->json([
+                'message' => 'Article created successfully',
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error in adding article: ' . $e->getMessage(),
+            ], 500);
+        }
     }
-    public function showAll(Request $request)
+
+    public function showAll()
+    {
+        //$articles = Article::all();
+        $articles = Article::with(['categories', 'user'])
+        ->get(['id', 'title', 'content', 'user_id', 'continent', 'country', 'main_picture']);
+
+        return response()->json([
+            'message' => 'getting all articles, success !',
+            'articles' => $articles,
+            //'categories' => $categories,
+        ]);
+    }
+
+    public function showMyArticles(Request $request)
     {
       //
   
     }
-    public function showArticle(Request $request)
+
+    public function showArticle($id)
+    {
+        $article = Article::find($id);
+        $categories = $article->categories;
+        $user_id = $article->user_id;
+        $author = User::find($user_id); //author of the article
+
+        return response()->json([
+            'message' => 'this is the article you have clicked on !',
+            'article' => $article,
+            //'categories' => $categories,
+            'author' => $author,
+        ]);
+    }
+
+    public function editArticle($id)
     {
       //
   
     }
-    public function editArticle(Request $request)
+    
+    public function deleteArticle($id)
     {
       //
   
     }
-    public function deleteArticle(Request $request)
-    {
-      //
-  
-    }
+
 }

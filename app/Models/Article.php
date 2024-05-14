@@ -45,4 +45,13 @@ class Article extends Model
         return $this->belongsToMany(Category::class);
         //OR return $this->belongsToMany('App\Models\Category');
     }
+
+     /**
+     * Get the user of the article(s) - relationship 
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+        //OR return $this->belongsTo('App\Models\User');
+    }
 }
