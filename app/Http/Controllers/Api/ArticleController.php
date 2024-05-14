@@ -92,16 +92,30 @@ class ArticleController extends Controller
        
     }
 
-    public function showMyArticles(Request $request)
+    public function showMyArticles()
     {
-      //
-  
+        $user = Auth::user();
+        //var_dump($user->id);
+        $articles = Article::with(['categories', 'user'])
+            ->where('user_id', '=', $user->id)
+            ->get(['id', 'title', 'content', 'user_id', 'continent', 'country', 'main_picture']);
+        if (!$articles->isEmpty()) {
+            return response()->json([
+                'message' => 'Here my articles, SUCCESS !',
+                'articles' => $articles,
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'You have not added any articles yet !',
+            ]);
+        }
     }
 
     public function showArticle($id)
     {
         try {
-            $article = Article::find($id);
+            $article = Article::findOrFail($id);
+            //var_dump($article->title);
             $categories = $article->categories;
             $user_id = $article->user_id;
             $author = User::find($user_id); //author of the article
@@ -127,8 +141,19 @@ class ArticleController extends Controller
     
     public function deleteArticle($id)
     {
-      //
-  
+        $article = Article::findOrFail($id);
+        $article->delete();
+        $article->categories()->detach();
+        //delete also related images and comments
+
+       /*  $images = $article->images;
+        // Iterate through each image and delete the file from storage
+        foreach ($images as $image) {
+            // Assuming the image 'path' field contains the file path
+            Storage::delete($image->path);
+        }
+        // Delete all images related to the article from the database
+        $article->images()->delete(); */
     }
 
 }
