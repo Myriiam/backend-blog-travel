@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id()->startingValue(1);
-            $table->foreignId('user_id')->unsigned();
+            $table->foreignId('user_id')->unsigned(); //not necessary to add unsigned() if it's foreignId()
             $table->string('title');
             $table->longText('content');
             $table->string('continent');

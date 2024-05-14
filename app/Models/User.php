@@ -45,6 +45,13 @@ class User extends Authenticatable implements JWTSubject
         'password' => 'hashed',
     ];
 
+      /**
+     * The table associated with the model.
+     * 
+     * @var string
+     */
+    protected $table = 'users';
+
      /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

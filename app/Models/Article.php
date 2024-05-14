@@ -54,4 +54,13 @@ class Article extends Model
         return $this->belongsTo(User::class);
         //OR return $this->belongsTo('App\Models\User');
     }
+
+     /**
+     * Get the images of the article - relationship 
+     */
+    public function images()
+    {
+        return $this->hasMany(Image::class);
+        //OR return $this->hasMany('App\Models\Image');
+    }
 }
