@@ -29,7 +29,7 @@ class ArticleController extends Controller
             'content' => 'required|string|max:255',
             'continent' => 'required|string',
             'country' => 'required|string',
-            'main_picture' => 'image',
+            'main_picture' => 'required|image',
             'categories' => 'required|array|min:1',
             'categories.*' => 'exists:categories,id'
         ]);
@@ -47,11 +47,11 @@ class ArticleController extends Controller
             $continent = $request->input('continent');
             $country = $request->input('country');
 
-       /*  if ($request->hasFile('main_picture')) {
+        if ($request->hasFile('main_picture')) {
                 
                 $path = $request->file('main_picture')->store('pictures');
                 $article->main_picture = $path;
-        } */
+        }
             //Save article's data in the database
             $article->user_id = $user_id;
             $article->title = $title;
