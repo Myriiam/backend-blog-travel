@@ -143,7 +143,7 @@ class ArticleController extends Controller
                 'message' => 'this is the article you have clicked on !',
                 'article' => $article,
                //'categories' => $categories,
-                'images' => $images,
+               // 'images' => $images,
                 'author' => $author,
             ]);
         } catch(\Exception $e) {
