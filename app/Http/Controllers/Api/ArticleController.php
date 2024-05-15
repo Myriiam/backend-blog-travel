@@ -40,7 +40,6 @@ class ArticleController extends Controller
         try {
             $user_id = Auth::user()->id;
             $article = new Article();
-            $cloudinaryImage = $request->main_picture->
             $title = $request->input('title');
             $content = $request->input('content');
             $continent = $request->input('continent');
@@ -72,6 +71,7 @@ class ArticleController extends Controller
             return response()->json([
                 'message' => 'Article created successfully',
             ], 201);
+
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Error in adding article: ' . $e->getMessage(),
