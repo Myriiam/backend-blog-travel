@@ -67,4 +67,28 @@ class UserController extends Controller
             'token_type'    => 'Bearer'
         ]);
     }
+
+    public function editProfile(Request $request) {
+        $user_id = Auth::user()->id;
+        $user = User::find($user_id);
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'avatar' => 'image|mimes:png,jpg,jpeg|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+    }
+
+    public function deleteAccount($id) {
+        $user_id = Auth::user()->id;
+        $user = User::find($user_id);
+
+       /*  $article = Article::findOrFail($id);
+        $article->delete();
+        $article->categories()->detach(); */
+    }
 }
