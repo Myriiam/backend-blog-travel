@@ -60,9 +60,9 @@ class Article extends Model
      /**
      * Get the images of the article - relationship 
      */
-   /*  public function images()
+    public function images()
     {
         return $this->hasMany(Image::class);
         //OR return $this->hasMany('App\Models\Image');
-    } */
+    } 
 }
