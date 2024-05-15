@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use App\Models\Article;
+
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -70,15 +72,20 @@ class UserController extends Controller
         ]);
     }
 
-    public function getAllUserInfo() {
-        $user = Auth::user();
-      //  var_dump($user);
+    /* public function getAllUserInfo() {
+        $user = Auth::user()->id;
+        var_dump($user);
+        
+        $user = Article::with(['categories', 'articles'])
+        ->where('user_id', '=', $user->id)
+        ->get();
+
 
          return response()->json([
             'message' => 'success',
             'user'  => $user,
         ]); 
-    }
+    } */
 
     public function editProfile(Request $request) {
         $user_id = Auth::user()->id;

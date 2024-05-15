@@ -103,6 +103,7 @@ class ArticleController extends Controller
             return response()->json([
                 'message' => 'Here my articles, SUCCESS !',
                 'articles' => $articles,
+                'user' => $user,
             ]);
         } else {
             return response()->json([
