@@ -93,8 +93,8 @@ class ArticleController extends Controller
     {   
         try {
              //$articles = Article::all();
-            $articles = Article::with(['categories', 'user'])
-            ->get(['id', 'title', 'content', 'user_id', 'continent', 'country', 'main_picture']);
+            $articles = Article::with(['categories', 'user', 'images'])
+            ->get();
 
             return response()->json([
                 'message' => 'getting all articles, success !',
@@ -113,9 +113,9 @@ class ArticleController extends Controller
     {
         $user = Auth::user();
         //var_dump($user->id);
-        $articles = Article::with(['categories', 'user'])
+        $articles = Article::with(['categories', 'user', 'images'])
             ->where('user_id', '=', $user->id)
-            ->get(['id', 'title', 'content', 'user_id', 'continent', 'country', 'main_picture']);
+            ->get();
         if (!$articles->isEmpty()) {
             return response()->json([
                 'message' => 'Here my articles, SUCCESS !',
