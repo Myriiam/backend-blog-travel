@@ -29,7 +29,7 @@ class ArticleController extends Controller
             'content' => 'required|string|max:255',
             'continent' => 'required|string',
             'country' => 'required|string',
-            'main_picture' => 'required|image',
+            'main_picture' => 'required',
             'categories' => 'required|exists:categories,id',
         ]);
 
@@ -45,7 +45,9 @@ class ArticleController extends Controller
             $continent = $request->input('continent');
             $country = $request->input('country');
 
-            $cloudinaryImage = $request->input('main_picture')->storeOnCloudinary('main-picture');
+            //var_dump($request->file('main_picture'));
+
+            $cloudinaryImage = $request->file('main_picture')->storeOnCloudinary('main-picture');
             $url = $cloudinaryImage->getSecurePath();
             $publicId = $cloudinaryImage->getPublicId();
 
