@@ -33,6 +33,7 @@ Route::patch('/{id}/edit-article', [ArticleController::class, 'editArticle'])->n
 Route::delete('/{id}/delete-article', [ArticleController::class, 'deleteArticle'])->name('delete_article');
 
 //Users
+Route::get('/info-user', [UserController::class, 'getAllUserInfo']);
 Route::patch('/{id}/edit-profile', [UserController::class, 'editProfile']);
 Route::delete('/{id}/delete-account', [UserController::class, 'deleteAccount']);
 

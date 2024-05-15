@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -66,6 +68,16 @@ class UserController extends Controller
             'access_token'  => $token,
             'token_type'    => 'Bearer'
         ]);
+    }
+
+    public function getAllUserInfo() {
+        $user = Auth::user();
+      //  var_dump($user);
+
+         return response()->json([
+            'message' => 'success',
+            'user'  => $user,
+        ]); 
     }
 
     public function editProfile(Request $request) {
