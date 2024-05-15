@@ -47,15 +47,11 @@ class ArticleController extends Controller
 
             //var_dump($request->file('main_picture'));
 
+            //Upload main picture for the article
             $cloudinaryImage = $request->file('main_picture')->storeOnCloudinary('main-picture');
             $url = $cloudinaryImage->getSecurePath();
             $publicId = $cloudinaryImage->getPublicId();
 
-        /* if ($request->hasFile('main_picture')) {
-                
-                $path = $request->file('main_picture')->store('pictures');
-                $article->main_picture = $path;
-        } */
             //Save article's data in the database
             $article->user_id = $user_id;
             $article->title = $title;
@@ -65,10 +61,22 @@ class ArticleController extends Controller
             $article->image_url = $url;
             $article->image_public_id = $publicId;
 
-
             $article->save();
             //To link one or more than one categories to the article
             $article->categories()->attach($request->categories);
+
+             //Upload other images for the article
+            $filesImg = $request->file('images');
+            //var_dump($filesImg);
+            foreach($filesImg as $fileImg) {
+                $fileCloudy = $fileImg->storeOnCloudinary('article-images');
+                $urlImg = $fileCloudy->getSecurePath();
+                $publicIdImg = $fileCloudy->getPublicId(); 
+                $article->images()->create([
+                        'image_url' => $urlImg,
+                        'image_public_id' => $publicIdImg,
+                    ]);
+            }
             
             return response()->json([
                 'message' => 'Article created successfully',
