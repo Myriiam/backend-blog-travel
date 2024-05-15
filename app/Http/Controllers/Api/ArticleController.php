@@ -134,7 +134,7 @@ class ArticleController extends Controller
         try {
             $article = Article::findOrFail($id);
             //var_dump($article->title);
-           // $categories = $article->categories;
+            $categories = $article->categories;
             $user_id = $article->user_id;
             $author = User::find($user_id); //author of the article
             $images = $article->images;
