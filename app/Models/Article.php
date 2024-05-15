@@ -20,7 +20,9 @@ class Article extends Model
         'content',
         'continent',
         'country',
-        'main_picture',
+        //'main_picture',
+        'image_url',
+        'image_public_id',
     ];
 
       /**

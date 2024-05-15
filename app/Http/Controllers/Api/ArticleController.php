@@ -39,26 +39,34 @@ class ArticleController extends Controller
     
         try {
             $user_id = Auth::user()->id;
-
             $article = new Article();
+            $cloudinaryImage = $request->main_picture->
             $title = $request->input('title');
             $content = $request->input('content');
             $continent = $request->input('continent');
             $country = $request->input('country');
 
-        if ($request->hasFile('main_picture')) {
+            $cloudinaryImage = $request->input('main_picture')>storeOnCloudinary('main-picture');
+            $url = $cloudinaryImage->getSecurePath();
+            $publicId = $cloudinaryImage->getPublicId();
+
+        /* if ($request->hasFile('main_picture')) {
                 
                 $path = $request->file('main_picture')->store('pictures');
                 $article->main_picture = $path;
-        }
+        } */
             //Save article's data in the database
             $article->user_id = $user_id;
             $article->title = $title;
             $article->content = $content;
             $article->continent = $continent;
             $article->country = $country;
+            $article->image_url = $url;
+            $article->image_public_id = $publicId;
+
+
             $article->save();
-            //To link one or more tan one categories to the article
+            //To link one or more than one categories to the article
             $article->categories()->attach($request->categories);
             
             return response()->json([

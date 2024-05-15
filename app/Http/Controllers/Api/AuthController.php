@@ -20,8 +20,6 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login','register']]);
     }
 
-
-
     public function register(Request $request)
     {
         //var_dump('ok register');
