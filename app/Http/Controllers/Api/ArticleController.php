@@ -30,8 +30,7 @@ class ArticleController extends Controller
             'continent' => 'required|string',
             'country' => 'required|string',
             'main_picture' => 'required|image',
-            'categories' => 'required|array|min:1',
-            'categories.*' => 'exists:categories,id'
+            'categories' => 'required|exists:categories,id',
         ]);
 
         if ($validator->fails()) {
