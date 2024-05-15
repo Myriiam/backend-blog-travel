@@ -30,7 +30,7 @@ class ArticleController extends Controller
             'continent' => 'required|string',
             'country' => 'required|string',
             'main_picture' => 'image',
-            'categories' => 'required|array|min:1',
+            'categories' => 'required|min:1',
             'categories.*' => 'exists:categories,id'
         ]);
 
