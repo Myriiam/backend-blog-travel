@@ -45,7 +45,7 @@ class ArticleController extends Controller
             $continent = $request->input('continent');
             $country = $request->input('country');
 
-            $cloudinaryImage = $request->input('main_picture')>storeOnCloudinary('main-picture');
+            $cloudinaryImage = $request->input('main_picture')->storeOnCloudinary('main-picture');
             $url = $cloudinaryImage->getSecurePath();
             $publicId = $cloudinaryImage->getPublicId();
 
