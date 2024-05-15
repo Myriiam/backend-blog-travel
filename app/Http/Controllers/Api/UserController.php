@@ -93,7 +93,7 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'text',
             'avatar' => 'image|mimes:png,jpg,jpeg|max:2048',
         ]);
 
