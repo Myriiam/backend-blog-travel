@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->text('description')->nullable();
-            $table->string('avatar')->default('storage/app/avatar.png');
+            $table->string('avatar')->default('public/storage/avatar.png')->change();
         });
     }
 
@@ -23,8 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-             $table->dropColumn('description')->nullable();
-             $table->dropColumn('avatar')->default('storage/app/avatar.png');
+            $table->string('avatar')->default('public/storage/avatar.png')->change();
         });
     }
 };
