@@ -48,9 +48,9 @@ class ArticleController extends Controller
             //var_dump($request->file('main_picture'));
 
             //Upload main picture for the article
-         //   $cloudinaryImage = $request->file('main_picture')->storeOnCloudinary('main-picture');
-         //   $url = $cloudinaryImage->getSecurePath();
-         //   $publicId = $cloudinaryImage->getPublicId();
+            $cloudinaryImage = $request->file('main_picture')->storeOnCloudinary('main-picture');
+            $url = $cloudinaryImage->getSecurePath();
+            $publicId = $cloudinaryImage->getPublicId();
 
             //Save article's data in the database
             $article->user_id = $user_id;
@@ -58,15 +58,15 @@ class ArticleController extends Controller
             $article->content = $content;
             $article->continent = $continent;
             $article->country = $country;
-           // $article->image_url = $url;
-           // $article->image_public_id = $publicId;
+            $article->image_url = $url;
+            $article->image_public_id = $publicId;
 
             $article->save();
             //To link one or more than one categories to the article
             $article->categories()->attach($request->categories);
 
              //Upload other images for the article
-          /*   $filesImg = $request->file('images');
+             $filesImg = $request->file('images');
             //var_dump($filesImg);
             foreach($filesImg as $fileImg) {
                 $fileCloudy = $fileImg->storeOnCloudinary('article-images');
@@ -76,7 +76,7 @@ class ArticleController extends Controller
                         'image_url' => $urlImg,
                         'image_public_id' => $publicIdImg,
                     ]);
-            } */
+            } 
             
             return response()->json([
                 'message' => 'Article created successfully',
