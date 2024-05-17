@@ -66,7 +66,7 @@ class ArticleController extends Controller
             $article->categories()->attach($request->categories);
 
              //Upload other images for the article
-            $filesImg = $request->file('images');
+          /*   $filesImg = $request->file('images');
             //var_dump($filesImg);
             foreach($filesImg as $fileImg) {
                 $fileCloudy = $fileImg->storeOnCloudinary('article-images');
@@ -76,7 +76,7 @@ class ArticleController extends Controller
                         'image_url' => $urlImg,
                         'image_public_id' => $publicIdImg,
                     ]);
-            }
+            } */
             
             return response()->json([
                 'message' => 'Article created successfully',
