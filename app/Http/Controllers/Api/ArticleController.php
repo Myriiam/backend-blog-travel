@@ -29,7 +29,7 @@ class ArticleController extends Controller
             'content' => 'required|string|max:255',
             'continent' => 'required|string',
             'country' => 'required|string',
-            'main_picture' => 'required',
+            //'main_picture' => 'required',
             'categories' => 'required|exists:categories,id',
         ]);
 
@@ -58,7 +58,7 @@ class ArticleController extends Controller
             $article->content = $content;
             $article->continent = $continent;
             $article->country = $country;
-            $article->image_url = $url;
+             $article->image_url = $url;
             $article->image_public_id = $publicId;
 
             $article->save();
