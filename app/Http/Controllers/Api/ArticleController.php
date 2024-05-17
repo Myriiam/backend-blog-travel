@@ -48,9 +48,9 @@ class ArticleController extends Controller
             //var_dump($request->file('main_picture'));
 
             //Upload main picture for the article
-            $cloudinaryImage = $request->file('main_picture')->storeOnCloudinary('main-picture');
-            $url = $cloudinaryImage->getSecurePath();
-            $publicId = $cloudinaryImage->getPublicId();
+         //   $cloudinaryImage = $request->file('main_picture')->storeOnCloudinary('main-picture');
+         //   $url = $cloudinaryImage->getSecurePath();
+         //   $publicId = $cloudinaryImage->getPublicId();
 
             //Save article's data in the database
             $article->user_id = $user_id;
