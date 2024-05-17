@@ -58,8 +58,8 @@ class ArticleController extends Controller
             $article->content = $content;
             $article->continent = $continent;
             $article->country = $country;
-             $article->image_url = $url;
-            $article->image_public_id = $publicId;
+           // $article->image_url = $url;
+           // $article->image_public_id = $publicId;
 
             $article->save();
             //To link one or more than one categories to the article
