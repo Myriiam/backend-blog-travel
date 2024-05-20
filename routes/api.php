@@ -29,7 +29,7 @@ Route::get('/all-categories', [ArticleController::class, 'getCategories']);
 Route::get('/show-all', [ArticleController::class, 'showAll']);
 Route::get('/my-articles', [ArticleController::class, 'showMyArticles']);
 Route::get('/show-article/{id}', [ArticleController::class, 'showArticle'])->name('show_article');
-Route::patch('/{id}/edit-article', [ArticleController::class, 'editArticle'])->name('edit_article');
+Route::patch('/{id}/update-article', [ArticleController::class, 'updateArticle'])->name('update_article');
 Route::delete('/{id}/delete-article', [ArticleController::class, 'deleteArticle'])->name('delete_article');
 
 //Users

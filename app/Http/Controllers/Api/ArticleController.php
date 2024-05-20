@@ -29,7 +29,7 @@ class ArticleController extends Controller
             'content' => 'required|string|max:255',
             'continent' => 'required|string',
             'country' => 'required|string',
-            //'main_picture' => 'required',
+            'main_picture' => 'required',
             'categories' => 'required|exists:categories,id',
         ]);
 
@@ -153,27 +153,106 @@ class ArticleController extends Controller
         }
     }
 
-    public function editArticle($id)
-    {
-      //
-  
+    public function updateArticle(Request $request, $id)
+{
+    // Get the authenticated user's ID
+    $user_id = Auth::user()->id;
+    $article = Article::find($id);
+    
+    // Check if the article exists
+    if (!$article) {
+        return response()->json(['message' => 'Article not found'], 404);
     }
+    
+    // Check if the authenticated user is the owner of the article
+    if ($user_id != $article->user_id) {
+        return response()->json(['message' => 'Unauthorized'], 403);
+    }
+    
+    // Validate the request
+    $validator = Validator::make($request->all(), [
+        'title' => 'sometimes|string|max:255',
+        'content' => 'sometimes|string',
+        'continent' => 'sometimes|string',
+        'country' => 'sometimes|string',
+        'main_picture' => 'sometimes|image|max:10240', // Max 10MB size
+        'categories' => 'sometimes|exists:categories,id',
+        'images.*' => 'sometimes|image|max:10240' // Max 10MB size per image
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json($validator->errors(), 422);
+    }
+
+    try {
+        // Update the article's fields if they exist in the request
+        if ($request->input('title')) {
+            $article->title = $request->input('title');
+        }
+        if ($request->has('content')) {
+            $article->content = $request->input('content');
+        }
+        if ($request->has('continent')) {
+            $article->continent = $request->input('continent');
+        }
+        if ($request->has('country')) {
+            $article->country = $request->input('country');
+        }
+
+        // Handle main picture upload if present
+        if ($request->hasFile('main_picture')) {
+            $cloudinaryImage = $request->file('main_picture')->storeOnCloudinary('main-picture');
+            $article->image_url = $cloudinaryImage->getSecurePath();
+            $article->image_public_id = $cloudinaryImage->getPublicId();
+        }
+
+        // Save the article
+        $article->save();
+
+        // Sync categories if present
+        if ($request->has('categories')) {
+            $article->categories()->sync($request->input('categories'));
+        }
+
+        // Handle multiple image uploads
+        if ($request->hasFile('images')) {
+            $filesImg = $request->file('images');
+            foreach ($filesImg as $fileImg) {
+                $fileCloudy = $fileImg->storeOnCloudinary('article-images');
+                $article->images()->create([
+                    'image_url' => $fileCloudy->getSecurePath(),
+                    'image_public_id' => $fileCloudy->getPublicId()
+                ]);
+            }
+            return response()->json(['message' => 'ok for image'], 200);
+
+        }
+
+        return response()->json([
+            'message' => 'Article updated successfully',
+        ], 200);
+    } catch (\Exception $e) {
+        return response()->json(['message' => 'Error in updating the article: ' . $e->getMessage()], 500);
+    }
+}
     
     public function deleteArticle($id)
     {
         $article = Article::findOrFail($id);
-        $article->delete();
-        $article->categories()->detach();
-        //delete also related images and comments
+        try {
+            $article->delete();
+            $article->categories()->detach();
+            $article->images()->delete();
+            ////////////TODO : delete also related comments (and likes)
+    
+            return response()->json([
+                'message' => 'Article deleted successfully',
+                'article' => $article,
+            ], 200);
 
-       /*  $images = $article->images;
-        // Iterate through each image and delete the file from storage
-        foreach ($images as $image) {
-            // Assuming the image 'path' field contains the file path
-            Storage::delete($image->path);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error in updating the article: ' . $e->getMessage()], 500);
         }
-        // Delete all images related to the article from the database
-        $article->images()->delete(); */
     }
 
 }
