@@ -251,7 +251,7 @@ class ArticleController extends Controller
             ], 200);
 
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Error in updating the article: ' . $e->getMessage()], 500);
+            return response()->json(['message' => 'Error in deleting the article: ' . $e->getMessage()], 500);
         }
     }
 

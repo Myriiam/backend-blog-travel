@@ -33,9 +33,8 @@ Route::patch('/{id}/update-article', [ArticleController::class, 'updateArticle']
 Route::delete('/{id}/delete-article', [ArticleController::class, 'deleteArticle'])->name('delete_article');
 
 //Users
-//Route::get('/info-user', [UserController::class, 'getAllUserInfo']);
-Route::patch('/{id}/edit-profile', [UserController::class, 'editProfile']);
-Route::delete('/{id}/delete-account', [UserController::class, 'deleteAccount']);
+Route::patch('/edit-profile', [UserController::class, 'editProfile']);
+Route::delete('/delete-account', [UserController::class, 'deleteAccount']);
 
 
 /* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
