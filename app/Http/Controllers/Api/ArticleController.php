@@ -78,6 +78,7 @@ class ArticleController extends Controller
                         'image_url' => $urlImg,
                         'image_public_id' => $publicIdImg,
                     ]);
+                    var_dump($article->image_url);
             } 
             
             return response()->json([

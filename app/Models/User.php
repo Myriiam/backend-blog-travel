@@ -92,4 +92,13 @@ class User extends Authenticatable implements JWTSubject
         //OR return $this->hasMany('App\Models\Comment');
     }
 
+     /**
+     * Get the favorites(likes) article of the user - relationship
+     */
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+        //OR return $this->hasMany('App\Models\Favorite');
+    }
+
 }

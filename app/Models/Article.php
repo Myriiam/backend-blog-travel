@@ -74,4 +74,14 @@ class Article extends Model
         return $this->hasMany(Comment::class);
         //OR return $this->hasMany('App\Models\Comment');
     }
+
+    /**
+     * Get the like(s) of the article - relationship 
+     */
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+        //OR return $this->hasMany('App\Models\Favorite');
+    }
+
 }

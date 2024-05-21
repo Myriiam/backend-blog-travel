@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\FavoriteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +42,10 @@ Route::delete('/delete-account', [UserController::class, 'deleteAccount']);
 Route::post('/{id}/add-comment', [CommentController::class, 'addComment']);
 Route::patch('/{id}/edit-comment', [CommentController::class, 'editComment']);
 Route::delete('/{id}/delete-comment', [CommentController::class, 'deleteComment']);
+
+//Favorites 
+Route::get('/all-favorites', [FAvoriteController::class, 'getFavoritesArticles']);
+
 
 /* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
