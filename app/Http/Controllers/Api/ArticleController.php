@@ -30,7 +30,8 @@ class ArticleController extends Controller
             'content' => 'required|string|max:255',
             'continent' => 'required|string',
             'country' => 'required|string',
-            'main_picture' => 'required',
+            'main_picture' => 'required|image',
+            'images' => 'required|image',
             'categories' => 'required|exists:categories,id',
         ]);
 
@@ -177,9 +178,9 @@ class ArticleController extends Controller
         'content' => 'sometimes|string',
         'continent' => 'sometimes|string',
         'country' => 'sometimes|string',
-        'main_picture' => 'sometimes|image|max:10240', // Max 10MB size
+        'main_picture' => 'sometimes|image', // Max 10MB size
         'categories' => 'sometimes|exists:categories,id',
-        'images.*' => 'sometimes|image|max:10240' // Max 10MB size per image
+        'images.*' => 'sometimes|image' // Max 10MB size per image
     ]);
 
     if ($validator->fails()) {
