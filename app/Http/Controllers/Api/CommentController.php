@@ -99,6 +99,34 @@ class CommentController extends Controller
                 'message' => 'Error in editing comment : ' . $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function deleteComment($id)  //comment's id
+    {   
+        $user_id = Auth::user()->id;
+        $user = User::find($user_id);
+        $comment = Comment::findOrFail($id);
+
+         //Check if the auth user is the owner of the comment
+         if ($user_id != $comment->user_id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        
+        try {
+            $comment->delete();
+
+            return response()->json([
+                'message' => 'Comment deleted successfully',
+                'comment' => $comment,
+            ], 200);
+
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'message' => 'Error while deleting comment : ' . $e->getMessage(),
+            ], 500);
+        }
 
     }
 }

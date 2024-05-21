@@ -239,7 +239,8 @@ class ArticleController extends Controller
 }
     
     public function deleteArticle($id)
-    {
+    {   
+        //TODO : only owner of the article can delete the message
         $article = Article::findOrFail($id);
         try {
             $article->delete();
