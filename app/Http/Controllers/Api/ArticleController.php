@@ -179,9 +179,9 @@ class ArticleController extends Controller
         'content' => 'sometimes|string',
         'continent' => 'sometimes|string',
         'country' => 'sometimes|string',
-        'main_picture' => 'sometimes|image|max:10240', // Max 10MB size
+        'main_picture' => 'sometimes|max:10240', // Max 10MB size
         'categories' => 'sometimes|exists:categories,id',
-        'images.*' => 'sometimes|image|max:10240' // Max 10MB size per image
+        'images.*' => 'sometimes|max:10240' // Max 10MB size per image
     ]);
 
     if ($validator->fails()) {
