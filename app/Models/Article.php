@@ -65,4 +65,13 @@ class Article extends Model
         return $this->hasMany(Image::class);
         //OR return $this->hasMany('App\Models\Image');
     } 
+
+    /**
+     * Get the comment(s) of the article - relationship 
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+        //OR return $this->hasMany('App\Models\Comment');
+    }
 }

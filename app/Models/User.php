@@ -83,4 +83,13 @@ class User extends Authenticatable implements JWTSubject
         //OR return $this->hasMany('App\Models\Article');
     }
 
+    /**
+     * Get the article comment(s) of the user - relationship
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+        //OR return $this->hasMany('App\Models\Comment');
+    }
+
 }

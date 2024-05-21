@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\User;
+use App\Models\Comment;
 
 
 class ArticleController extends Controller
@@ -93,7 +94,7 @@ class ArticleController extends Controller
     {   
         try {
              //$articles = Article::all();
-            $articles = Article::with(['categories', 'user', 'images'])
+            $articles = Article::with(['categories', 'user', 'images', 'comments'])
             ->get();
 
             return response()->json([
@@ -113,7 +114,7 @@ class ArticleController extends Controller
     {
         $user = Auth::user();
         //var_dump($user->id);
-        $articles = Article::with(['categories', 'user', 'images'])
+        $articles = Article::with(['categories', 'user', 'images', 'comments'])
             ->where('user_id', '=', $user->id)
             ->get();
         if (!$articles->isEmpty()) {
@@ -138,6 +139,7 @@ class ArticleController extends Controller
             $user_id = $article->user_id;
             $author = User::find($user_id); //author of the article
             $images = $article->images;
+            $comments = $article->comments;
            
             return response()->json([
                 'message' => 'this is the article you have clicked on !',
@@ -243,8 +245,7 @@ class ArticleController extends Controller
             $article->delete();
             $article->categories()->detach();
             $article->images()->delete();
-            ////////////TODO : delete also related comments (and likes)
-    
+            $article->comments()->delete();
             return response()->json([
                 'message' => 'Article deleted successfully',
                 'article' => $article,
