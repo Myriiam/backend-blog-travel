@@ -39,6 +39,8 @@ Route::delete('/delete-account', [UserController::class, 'deleteAccount']);
 
 //Comments
 Route::post('/{id}/add-comment', [CommentController::class, 'addComment']);
+Route::patch('/{id}/edit-comment', [CommentController::class, 'editComment']);
+Route::delete('/{id}/delete-comment', [CommentController::class, 'deleteComment']);
 
 /* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
