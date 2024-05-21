@@ -94,22 +94,35 @@ class ArticleController extends Controller
 
     public function showAll()
     {   
+        $user = Auth::user();
+
         try {
-             //$articles = Article::all();
-            $articles = Article::with(['categories', 'user', 'images', 'comments'])
+            $articles = Article::with(['categories', 'user', 'images', 'comments', 'favorites'])
             ->get();
+
+           // Retrieve the authenticated user's favorite articles
+            $likedArticleIds = DB::table('favorites')
+            ->where('user_id', '=', $user->id)
+            ->pluck('article_id')
+            ->toArray();
+
+            // Add a 'is_favorite' attribute to each article : false or true (boolean)
+            $articles->each(function ($article) use ($likedArticleIds) {
+                $article->is_favorite = in_array($article->id, $likedArticleIds);
+                $article->favorite_count = $article->favorites->count();
+                $article->comment_count = $article->comments->count();
+            });
 
             return response()->json([
                 'message' => 'getting all articles, success !',
                 'articles' => $articles,
-                //'categories' => $categories,
             ]);
+
         } catch(\Exception $e) {
             return response()->json([
                 'message' => 'Error in retrieving all articles !! : ' . $e->getMessage(),
             ], 500);
         }
-       
     }
 
     public function showMyArticles()
@@ -119,6 +132,7 @@ class ArticleController extends Controller
         $articles = Article::with(['categories', 'user', 'images', 'comments'])
             ->where('user_id', '=', $user->id)
             ->get();
+            
         if (!$articles->isEmpty()) {
             return response()->json([
                 'message' => 'Here my articles, SUCCESS !',
@@ -135,21 +149,43 @@ class ArticleController extends Controller
     public function showArticle($id)
     {
         try {
+            $authUser = Auth::user();
             $article = Article::findOrFail($id);
-            //var_dump($article->title);
             $categories = $article->categories;
             $user_id = $article->user_id;
             $author = User::find($user_id); //author of the article
             $images = $article->images;
             $comments = $article->comments;
-           
+            $nbComments = $comments->count(); //Count the number of comments for this article
+            $favorites = $article->favorites; //all favorites for different user
+
+            /* $liked = DB::table('favorites')->join('users', 'users.id', '=', 'favorites.user_id')
+           ->select('favorites.id', 'favorites.user_id', 'favorites.article_id')
+           ->where('favorites.article_id', '=', $id)
+           ->where('favorites.user_id', '=', $authUser->id)
+           ->get(); */  
+            $nbLikes = $favorites->count(); //Count the number of likes for this article
+
+            // Check if the article is liked by the authenticated user
+            $isFavorite = DB::table('favorites')
+            ->where('user_id', '=', $authUser->id)
+            ->where('article_id', '=', $article->id)
+            ->exists();
+
+            // Add a 'is_favorite' attribute to the article
+            $article->is_favorite = $isFavorite;
+
             return response()->json([
                 'message' => 'this is the article you have clicked on !',
                 'article' => $article,
                //'categories' => $categories,
                // 'images' => $images,
                 'author' => $author,
+                'nbComments' => $nbComments,
+                'nbLikes' => $nbLikes,
+               // 'likes' => $liked,
             ]);
+
         } catch(\Exception $e) {
             return response()->json([
                 'message' => 'Error in retrieving this article: ' . $e->getMessage(),
@@ -229,12 +265,12 @@ class ArticleController extends Controller
                 ]);
             }
             return response()->json(['message' => 'ok for image'], 200);
-
         }
 
         return response()->json([
             'message' => 'Article updated successfully',
         ], 200);
+
     } catch (\Exception $e) {
         return response()->json(['message' => 'Error in updating the article: ' . $e->getMessage()], 500);
     }

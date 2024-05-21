@@ -44,7 +44,9 @@ Route::patch('/{id}/edit-comment', [CommentController::class, 'editComment']);
 Route::delete('/{id}/delete-comment', [CommentController::class, 'deleteComment']);
 
 //Favorites 
-Route::get('/all-favorites', [FAvoriteController::class, 'getFavoritesArticles']);
+Route::get('/my-favorites', [FavoriteController::class, 'getMyFavoritesArticles']);
+Route::post('/{id}/like', [FavoriteController::class, 'likeArticle']);
+Route::delete('/{id}/dislike', [FavoriteController::class, 'dislikeArticle']);
 
 
 /* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
