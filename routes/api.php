@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\CommentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,8 +38,7 @@ Route::patch('/edit-profile', [UserController::class, 'editProfile']);
 Route::delete('/delete-account', [UserController::class, 'deleteAccount']);
 
 //Comments
-Route::get('/all-comment', [UserController::class, 'getAllComments']);
-Route::post('/add-comment', [UserController::class, 'addComment']);
+Route::post('/{id}/add-comment', [CommentController::class, 'addComment']);
 
 /* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
