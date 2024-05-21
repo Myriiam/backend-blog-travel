@@ -30,7 +30,7 @@ class ArticleController extends Controller
             'content' => 'required|string|max:255',
             'continent' => 'required|string',
             'country' => 'required|string',
-            'main_picture' => 'required|image|max:10240',
+            'main_picture' => 'required|image|max:20480',
             'images.*' => 'required|image|max:10240',
             'categories' => 'required|exists:categories,id',
         ]);
