@@ -30,7 +30,7 @@ class ArticleController extends Controller
             'content' => 'required|string|max:255',
             'continent' => 'required|string',
             'country' => 'required|string',
-            'main_picture' => 'required|image|max:20480',
+            'main_picture' => 'required|image|max:10240',
             'images.*' => 'required|image|max:10240',
             'categories' => 'required|exists:categories,id',
         ]);
@@ -241,8 +241,14 @@ class ArticleController extends Controller
     
     public function deleteArticle($id)
     {   
-        //TODO : only owner of the article can delete the message
+        $user_id = Auth::user()->id;
         $article = Article::findOrFail($id);
+
+        // Check if the authenticated user is the owner of the article
+        if ($user_id != $article->user_id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
         try {
             $article->delete();
             $article->categories()->detach();
