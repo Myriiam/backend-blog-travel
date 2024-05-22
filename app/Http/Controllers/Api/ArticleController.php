@@ -164,7 +164,7 @@ class ArticleController extends Controller
             $user_id = $article->user_id;
             $author = User::find($user_id); //author of the article
             $images = $article->images;
-            $comments = $article->comments;
+            $comments = $article->comments()->with('user')->get();
             $nbComments = $comments->count(); //Count the number of comments for this article
             $favorites = $article->favorites; //all favorites for different user
 
@@ -186,6 +186,14 @@ class ArticleController extends Controller
                 $article->is_favorite = $isFavorite;
             }  
 
+            // Prepare comments with user names
+            $commentsWithUserNames = $comments->map(function($comment) {
+                return [
+                    'comment' => $comment,
+                    'user_name' => $comment->user->name,
+                ];
+            });
+
             return response()->json([
                 'message' => 'this is the article you have clicked on !',
                 'article' => $article,
@@ -194,6 +202,7 @@ class ArticleController extends Controller
                 'author' => $author,
                 'nbComments' => $nbComments,
                 'nbLikes' => $nbLikes,
+                'comments' => $commentsWithUserNames,
                 // 'likes' => $liked,
             ]);
 
