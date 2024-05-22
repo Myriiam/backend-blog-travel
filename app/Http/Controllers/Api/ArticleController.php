@@ -15,6 +15,11 @@ use App\Models\Comment;
 
 class ArticleController extends Controller
 {   
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['showAll','showArticle']]);
+    }
+
     public function getCategories() {
         $categories = Category::all();
         return response()->json([
@@ -78,7 +83,6 @@ class ArticleController extends Controller
                         'image_url' => $urlImg,
                         'image_public_id' => $publicIdImg,
                     ]);
-                    var_dump($article->image_url);
             } 
             
             return response()->json([
@@ -132,7 +136,7 @@ class ArticleController extends Controller
         $articles = Article::with(['categories', 'user', 'images', 'comments'])
             ->where('user_id', '=', $user->id)
             ->get();
-            
+
         if (!$articles->isEmpty()) {
             return response()->json([
                 'message' => 'Here my articles, SUCCESS !',
