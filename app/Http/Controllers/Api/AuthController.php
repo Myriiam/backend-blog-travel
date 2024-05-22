@@ -32,17 +32,21 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors());
         }
+        try {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password)
+            ]);
+    
+            return response()->json([
+                'user' => $user,
+                'message' => 'User created successfully',
+            ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ]);
-
-        return response()->json([
-            'user' => $user,
-            'message' => 'User created successfully',
-        ]);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error when register : ' . $e->getMessage()], 500);
+        }  
     }
 
 
@@ -59,36 +63,46 @@ class AuthController extends Controller
             return response()->json($validator->errors());
         }
 
-        $credentials = $request->only('email', 'password');
-        $token = JWTAuth::attempt($credentials);
-        //If valisation fails
-        if (!$token) {
+        try {
+            $credentials = $request->only('email', 'password');
+            $token = JWTAuth::attempt($credentials);
+            //If valisation fails
+            if (!$token) {
+                return response()->json([
+                    'message' => 'Unauthorized/Invalid credentials !'
+                ], 401);
+            }
+    
+            //If validation is successfull then token is generated
+            $user = Auth::user();
+    
             return response()->json([
-                'message' => 'Unauthorized/Invalid credentials !'
-            ], 401);
-        }
+                'user' => $user,
+                'message' => 'Login success',
+               // 'token' => $this->refresh($token),  //or 'refresh_token' => $refreshToken,
+                'token' => $token,
+                'token_type' => 'Bearer',
+                'expires_in' => config('jwt.ttl')
+            ]);
 
-        //If validation is successfull then token is generated
-        $user = Auth::user();
-
-        return response()->json([
-            'user' => $user,
-            'message' => 'Login success',
-           // 'token' => $this->refresh($token),  //or 'refresh_token' => $refreshToken,
-            'token' => $token,
-            'token_type' => 'Bearer',
-            'expires_in' => config('jwt.ttl')
-        ]);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error when trying to login : ' . $e->getMessage()], 500);
+        }  
     }
 
 
 
     public function logout()
-    {
-        Auth::logout();
-        return response()->json([
-            'message' => 'Successfully logged out',
-        ]);
+    {   
+        try {
+            Auth::logout();
+            return response()->json([
+                'message' => 'Successfully logged out',
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error when trying to logout : ' . $e->getMessage()], 500);
+        }  
     }
 
 
