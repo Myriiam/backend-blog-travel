@@ -164,7 +164,7 @@ class ArticleController extends Controller
             $user_id = $article->user_id;
             $author = User::find($user_id); //author of the article
             $images = $article->images;
-            $comments = $article->comments;
+            $comments = $article->comments->with('user')->get();
             $nbComments = $comments->count(); //Count the number of comments for this article
             $favorites = $article->favorites; //all favorites for different user
 
