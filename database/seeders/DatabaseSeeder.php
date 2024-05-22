@@ -25,6 +25,9 @@ class DatabaseSeeder extends Seeder
        User::factory()->count(10)->create();
 
        // Create articles with relationships
-       Article::factory()->count(10)->create();
+       Article::factory()->count(10)
+       ->hasComments(rand(1, 5))
+       ->hasImages(rand(1, 3))
+       ->create();
     }
 }

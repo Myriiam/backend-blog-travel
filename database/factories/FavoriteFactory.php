@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Favorite;
 use App\Models\Article;
 use App\Models\User;
-use Faker\Generator as Faker;
+//use Faker\Generator as Faker;
 
 
 /**

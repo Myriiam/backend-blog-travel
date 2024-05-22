@@ -17,7 +17,7 @@ class ArticleController extends Controller
 {   
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['showAll','showArticle']]);
+        $this->middleware('auth:api', ['except' => ['showAll','showArticle', 'getCategories']]);
     }
 
     public function getCategories() {
