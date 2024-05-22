@@ -190,7 +190,6 @@ class ArticleController extends Controller
             $commentsWithUserNames = $comments->map(function($comment) {
                 return [
                     'comment' => $comment,
-                    'user_name' => $comment->user->name,
                 ];
             });
 
