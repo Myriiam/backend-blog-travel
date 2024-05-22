@@ -98,24 +98,25 @@ class ArticleController extends Controller
 
     public function showAll()
     {   
-        $user = Auth::user();
 
         try {
             $articles = Article::with(['categories', 'user', 'images', 'comments', 'favorites'])
             ->get();
 
-           // Retrieve the authenticated user's favorite articles
-            $likedArticleIds = DB::table('favorites')
-            ->where('user_id', '=', $user->id)
-            ->pluck('article_id')
-            ->toArray();
+            if (Auth::user()) {
+                // Retrieve the authenticated user's favorite articles
+                $likedArticleIds = DB::table('favorites')
+                ->where('user_id', '=', $user->id)
+                ->pluck('article_id')
+                ->toArray(); 
 
-            // Add a 'is_favorite' attribute to each article : false or true (boolean)
-            $articles->each(function ($article) use ($likedArticleIds) {
-                $article->is_favorite = in_array($article->id, $likedArticleIds);
-                $article->favorite_count = $article->favorites->count();
-                $article->comment_count = $article->comments->count();
-            });
+                // Add a 'is_favorite' attribute to each article : false or true (boolean)
+                $articles->each(function ($article) use ($likedArticleIds) {
+                    $article->is_favorite = in_array($article->id, $likedArticleIds);
+                    $article->favorite_count = $article->favorites->count();
+                    $article->comment_count = $article->comments->count();
+                }); 
+            }
 
             return response()->json([
                 'message' => 'getting all articles, success !',
@@ -153,7 +154,6 @@ class ArticleController extends Controller
     public function showArticle($id)
     {
         try {
-            $authUser = Auth::user();
             $article = Article::findOrFail($id);
             $categories = $article->categories;
             $user_id = $article->user_id;
@@ -169,25 +169,27 @@ class ArticleController extends Controller
            ->where('favorites.user_id', '=', $authUser->id)
            ->get(); */  
             $nbLikes = $favorites->count(); //Count the number of likes for this article
+           
+            if (Auth::user()) {
+                // Check if the article is liked by the authenticated user
+                $isFavorite = DB::table('favorites')
+                ->where('user_id', '=', $authUser->id)
+                ->where('article_id', '=', $article->id)
+                ->exists();
 
-            // Check if the article is liked by the authenticated user
-            $isFavorite = DB::table('favorites')
-            ->where('user_id', '=', $authUser->id)
-            ->where('article_id', '=', $article->id)
-            ->exists();
-
-            // Add a 'is_favorite' attribute to the article
-            $article->is_favorite = $isFavorite;
+                // Add a 'is_favorite' attribute to the article
+                $article->is_favorite = $isFavorite;
+            }  
 
             return response()->json([
                 'message' => 'this is the article you have clicked on !',
                 'article' => $article,
-               //'categories' => $categories,
-               // 'images' => $images,
+                //'categories' => $categories,
+                // 'images' => $images,
                 'author' => $author,
                 'nbComments' => $nbComments,
                 'nbLikes' => $nbLikes,
-               // 'likes' => $liked,
+                // 'likes' => $liked,
             ]);
 
         } catch(\Exception $e) {
