@@ -36,4 +36,16 @@ class ArticleFactory extends Factory
             'image_public_id' => $this->faker->uuid,
         ];
     }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Article $article) {
+            $categories = \App\Models\Category::inRandomOrder()->take(rand(1, 3))->pluck('id');
+            $article->categories()->attach($categories);
+
+            \App\Models\Image::factory()->count(rand(1, 3))->create(['article_id' => $article->id]);
+            \App\Models\Comment::factory()->count(rand(1, 5))->create(['article_id' => $article->id]);
+            \App\Models\Favorite::factory()->count(rand(1, 5))->create(['article_id' => $article->id]);
+        });
+    }
 }
