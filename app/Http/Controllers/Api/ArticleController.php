@@ -87,6 +87,7 @@ class ArticleController extends Controller
             
             return response()->json([
                 'message' => 'Article created successfully',
+                'article' => $article,
             ], 201);
 
         } catch (\Exception $e) {
