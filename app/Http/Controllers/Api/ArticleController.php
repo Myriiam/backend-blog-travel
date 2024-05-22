@@ -106,7 +106,7 @@ class ArticleController extends Controller
             if (Auth::user()) {
                 // Retrieve the authenticated user's favorite articles
                 $likedArticleIds = DB::table('favorites')
-                ->where('user_id', '=', $user->id)
+                ->where('user_id', '=', Auth::user()->id)
                 ->pluck('article_id')
                 ->toArray(); 
 
@@ -173,7 +173,7 @@ class ArticleController extends Controller
             if (Auth::user()) {
                 // Check if the article is liked by the authenticated user
                 $isFavorite = DB::table('favorites')
-                ->where('user_id', '=', $authUser->id)
+                ->where('user_id', '=', Auth::user()->id)
                 ->where('article_id', '=', $article->id)
                 ->exists();
 
