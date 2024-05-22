@@ -32,9 +32,9 @@ class ArticleController extends Controller
         //var_dump(Auth::user()->id);
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
-            'content' => 'required|string|max:255',
-            'continent' => 'required|string',
-            'country' => 'required|string',
+            'content' => 'required|string',
+            'continent' => 'required|string|max:50',
+            'country' => 'required|string|max:50',
             'main_picture' => 'required|max:10240',
             'images.*' => 'required|max:10240',
             'categories' => 'required|exists:categories,id',
@@ -134,7 +134,11 @@ class ArticleController extends Controller
     public function showMyArticles()
     {
         $user = Auth::user();
-        //var_dump($user->id);
+        
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        
         $articles = Article::with(['categories', 'user', 'images', 'comments'])
             ->where('user_id', '=', $user->id)
             ->get();
@@ -204,8 +208,13 @@ class ArticleController extends Controller
 {
     // Get the authenticated user's ID
     $user_id = Auth::user()->id;
-    $article = Article::find($id);
+
+    if (!$user_id) {
+        return response()->json(['message' => 'Unauthorized'], 403);
+    }
     
+    $article = Article::find($id);
+
     // Check if the article exists
     if (!$article) {
         return response()->json(['message' => 'Article not found'], 404);
@@ -220,8 +229,8 @@ class ArticleController extends Controller
     $validator = Validator::make($request->all(), [
         'title' => 'sometimes|string|max:255',
         'content' => 'sometimes|string',
-        'continent' => 'sometimes|string',
-        'country' => 'sometimes|string',
+        'continent' => 'sometimes|string|max:50',
+        'country' => 'sometimes|string|max:50',
         'main_picture' => 'sometimes|max:10240', // Max 10MB size
         'categories' => 'sometimes|exists:categories,id',
         'images.*' => 'sometimes|max:10240' // Max 10MB size per image
@@ -286,12 +295,17 @@ class ArticleController extends Controller
     public function deleteArticle($id)
     {   
         $user_id = Auth::user()->id;
-        $article = Article::findOrFail($id);
+
+        if (!$user_id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
 
         // Check if the authenticated user is the owner of the article
         if ($user_id != $article->user_id) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
+
+        $article = Article::findOrFail($id);
 
         try {
             $article->delete();

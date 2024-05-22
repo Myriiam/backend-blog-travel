@@ -72,21 +72,6 @@ class UserController extends Controller
         ]);
     }
 
-    /* public function getAllUserInfo() {
-        $user = Auth::user()->id;
-        var_dump($user);
-        
-        $user = Article::with(['categories', 'articles'])
-        ->where('user_id', '=', $user->id)
-        ->get();
-
-
-         return response()->json([
-            'message' => 'success',
-            'user'  => $user,
-        ]); 
-    } */
-
     public function editProfile(Request $request) {
         $user_id = Auth::user()->id;
         $user = User::find($user_id);
@@ -133,7 +118,13 @@ class UserController extends Controller
 
     public function deleteAccount() {
         $user_id = Auth::user()->id;
+
+        if (!$user_id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
         $user = User::find($user_id);
+
         try {
             if ($user->articles()->exists()) {
                 // Retrieve user's articles

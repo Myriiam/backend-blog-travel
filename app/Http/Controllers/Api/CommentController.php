@@ -61,6 +61,11 @@ class CommentController extends Controller
     public function editComment(Request $request, $id)  //comment's id
     {  
         $user_id = Auth::user()->id;
+
+        if (!$user_id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        
         $user = User::find($user_id);
         $comment = Comment::find($id);
 
@@ -104,6 +109,11 @@ class CommentController extends Controller
     public function deleteComment($id)  //comment's id
     {   
         $user_id = Auth::user()->id;
+
+        if (!$user_id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        
         $user = User::find($user_id);
         $comment = Comment::findOrFail($id);
 
