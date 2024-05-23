@@ -48,7 +48,7 @@ class ArticleFactory extends Factory
       
         return [
             'user_id' => User::factory(),
-            'title' => $this->faker->sentence,
+            'title' => $this->faker->catchPhrase(),
             'content' => $this->faker->paragraph,
             'continent' => $continent,
             'country' =>  $country,
