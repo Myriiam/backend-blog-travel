@@ -32,32 +32,26 @@ class ArticleFactory extends Factory
      */
     public function definition(): array
     {   
-       /*  $continents = [
-            'Africa', 
-            'Asia', 
-            'Europe', 
-            'North America', 
-            'South America', 
-            'Oceania',
-        ];  */
+        $continentCountryMap = [
+            'Asia' => ['Afghanistan', 'China', 'India', 'Japan', 'South Korea', 'Indonesia', 'Singapore', 'Lebanon', 'Jordan', 'Oman'],
+            'South America' => ['Argentina', 'Brazil', 'Chile', 'Peru', 'Bolivia'],
+            'Oceania' => ['Australia', 'New Zealand', 'French Polynesia', 'Papua New Guinea'],
+            'North America' => ['Canada', 'Mexico', 'United States', 'Costa Rica', 'Cuba'],
+            'Europe' => ['France', 'Germany', 'United Kingdom', 'Italy', 'switzerland', 'Belgium', 'Ireland', 'Spain', 'Croatia'],
+            'Africa' => ['Nigeria', 'South Africa', 'Egypt', 'Morocco', 'Senegal', 'Kenya'],
+        ];
 
-    // Continent codes
-    //$randomContinent = $this->faker->randomElement($continents);
-    //$countries = CountriesArray::getFromContinent( 'alpha2', 'name', $randomContinent);
-    //$continent = Continent::getByCode('AS');
-    //$countries = $continents->countries()->get(); 
-    // Get a random country data from the selected continent's array
-    //$randomCountry = $this->faker->randomElement($countries);
-    // Extract country name
-    //$countryName = $randomCountryData['name']['common'];
-
+        // Select a random continent
+        $continent = $this->faker->randomElement(array_keys($continentCountryMap));
+        // Select a random country from the selected continent
+        $country = $this->faker->randomElement($continentCountryMap[$continent]);
       
         return [
             'user_id' => User::factory(),
             'title' => $this->faker->sentence,
             'content' => $this->faker->paragraph,
-            'continent' => $randomContinent->name,
-            'country' =>  $randomCountry->name,
+            'continent' => $continent,
+            'country' =>  $country,
             'image_url' => $this->faker->imageUrl(),
             'image_public_id' => $this->faker->uuid,
         ];

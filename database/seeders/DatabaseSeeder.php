@@ -21,13 +21,13 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
         ]);
 
-      /*  // Create users
+       // Create users
        User::factory()->count(10)->create();
 
        // Create articles with relationships
        Article::factory()->count(10)
        ->hasComments(rand(1, 5))
        ->hasImages(rand(1, 3))
-       ->create(); */
+       ->create();
     }
 }
