@@ -9,8 +9,7 @@ use App\Models\Image;
 use App\Models\Comment;
 use App\Models\Favorite;
 use App\Models\Category;
-use SameerShelavale\PhpCountriesArray\CountriesArray;
-include( "../src/CountriesArray.php" );
+
 
 //use Faker\Generator as Faker;
 
@@ -33,30 +32,32 @@ class ArticleFactory extends Factory
      */
     public function definition(): array
     {   
-        $continents = [
+       /*  $continents = [
             'Africa', 
             'Asia', 
             'Europe', 
             'North America', 
             'South America', 
             'Oceania',
-        ]; 
+        ];  */
 
     // Continent codes
-    $randomContinent = $this->faker->randomElement($continents);
-    $countries = CountriesArray::getFromContinent( 'alpha2', 'name', $randomContinent);
-
+    //$randomContinent = $this->faker->randomElement($continents);
+    //$countries = CountriesArray::getFromContinent( 'alpha2', 'name', $randomContinent);
+    //$continent = Continent::getByCode('AS');
+    //$countries = $continents->countries()->get(); 
     // Get a random country data from the selected continent's array
-    $randomCountry = $this->faker->randomElement($countries);
-
+    //$randomCountry = $this->faker->randomElement($countries);
     // Extract country name
     //$countryName = $randomCountryData['name']['common'];
+
+      
         return [
             'user_id' => User::factory(),
             'title' => $this->faker->sentence,
             'content' => $this->faker->paragraph,
-            'continent' => $randomContinent,
-            'country' => $randomCountry,
+            'continent' => $randomContinent->name,
+            'country' =>  $randomCountry->name,
             'image_url' => $this->faker->imageUrl(),
             'image_public_id' => $this->faker->uuid,
         ];
