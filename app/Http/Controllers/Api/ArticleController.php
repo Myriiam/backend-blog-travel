@@ -108,6 +108,7 @@ class ArticleController extends Controller
                 // Retrieve the authenticated user's favorite articles
                 $likedArticleIds = DB::table('favorites')
                 ->where('user_id', '=', Auth::user()->id)
+                ->orderBy('created_at','DESC')
                 ->pluck('article_id')
                 ->toArray(); 
 
@@ -141,6 +142,7 @@ class ArticleController extends Controller
         
         $articles = Article::with(['categories', 'user', 'images', 'comments'])
             ->where('user_id', '=', $user->id)
+            ->orderBy('created_at','DESC')
             ->get();
 
         if (!$articles->isEmpty()) {
