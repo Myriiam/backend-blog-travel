@@ -102,6 +102,7 @@ class ArticleController extends Controller
 
         try {
             $articles = Article::with(['categories', 'user', 'images', 'comments', 'favorites'])
+            ->orderBy('created_at','DESC')
             ->get();
 
             if (Auth::user()) {
