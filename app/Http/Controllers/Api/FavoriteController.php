@@ -57,13 +57,13 @@ class FavoriteController extends Controller
         }
 
         // Check if the favorite already exists
-        $favoriteExists = Favorite::where('user_id', $user_id)
+       /*  $favoriteExists = Favorite::where('user_id', $user_id)
         ->where('article_id', $article_id)
         ->exists();
 
         if ($favoriteExists) {
             return response()->json(['message' => 'You have already liked this article !'], 409); // 409 Conflict
-        }
+        } */
 
         try {
             Favorite::create([
