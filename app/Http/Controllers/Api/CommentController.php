@@ -32,7 +32,7 @@ class CommentController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'content' => 'string|max:255',
+            'content' => 'string|max:1000',
         ]);
 
         if ($validator->fails()) {
@@ -80,7 +80,7 @@ class CommentController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'content' => 'sometimes|string|max:255',
+            'content' => 'sometimes|string|max:1000',
         ]);
     
         if ($validator->fails()) {
