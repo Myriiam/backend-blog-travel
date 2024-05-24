@@ -39,12 +39,21 @@ class ArticleFactory extends Factory
             'North America' => ['Canada', 'Mexico', 'United States', 'Costa Rica', 'Cuba'],
             'Europe' => ['France', 'Germany', 'United Kingdom', 'Italy', 'switzerland', 'Belgium', 'Ireland', 'Spain', 'Croatia'],
             'Africa' => ['Nigeria', 'South Africa', 'Egypt', 'Morocco', 'Senegal', 'Kenya'],
+        ];  
+
+        $imageUrls = [
+            'https://res.cloudinary.com/drjjwnstk/image/upload/v1716535166/main-picture/hero-banner2_yzgff8.webp',
+            'https://res.cloudinary.com/drjjwnstk/image/upload/v1716535142/main-picture/thomas-hetzler-6F6WOgqkT2I-unsplash_saysh3.webp',
+            'https://res.cloudinary.com/drjjwnstk/image/upload/v1716535110/main-picture/nareeta-martin-pS58s5m6Ot8-unsplash_zfbyq2.webp',
         ];
 
         // Select a random continent
         $continent = $this->faker->randomElement(array_keys($continentCountryMap));
         // Select a random country from the selected continent
         $country = $this->faker->randomElement($continentCountryMap[$continent]);
+        
+        // Select a random image URL from the array
+        $imageUrl = $this->faker->randomElement($imageUrls);
       
         return [
             'user_id' => User::factory(),
@@ -52,7 +61,7 @@ class ArticleFactory extends Factory
             'content' => $this->faker->paragraph,
             'continent' => $continent,
             'country' =>  $country,
-            'image_url' => $this->faker->imageUrl(),
+            'image_url' => $imageUrl,
             'image_public_id' => $this->faker->uuid,
         ];
     }

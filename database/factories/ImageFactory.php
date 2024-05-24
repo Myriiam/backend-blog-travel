@@ -25,10 +25,20 @@ class ImageFactory extends Factory
      * @return array<string, mixed>
      */
     public function definition(): array
-    {
+    {   
+        $imagesUrls = [
+            'https://res.cloudinary.com/drjjwnstk/image/upload/v1716409532/article-images/oihythfj16peiqudzp6j.jpg',
+            'https://res.cloudinary.com/drjjwnstk/image/upload/v1716383814/article-images/xdnon5zolioouoyz8qqi.jpg',
+            'https://res.cloudinary.com/drjjwnstk/image/upload/v1716383812/article-images/cgqrxzsxg2lxiahztv62.jpg',
+        ];
+
+        // Select a random image URL from the array
+        $imagesUrl = $this->faker->randomElement($imagesUrls);
+
+
         return [
             'article_id' => Article::factory(), // Ensures that an article is created if none exists
-            'image_url' => $this->faker->imageUrl(),
+            'image_url' => $imagesUrl,
             'image_public_id' => $this->faker->uuid,
         ];
     }
