@@ -14,7 +14,7 @@ Here you can find all endpoints related to the website [travel Bloggers](https:/
 |--|--|--|--|
 | /api/register | POST | Register a user | - |
 | /api/login | POST | Login a user | - |
-| /api/logout| POST | logout a user| yes |
+| /api/logout| POST | Logout a user| yes |
 | /api/add-article | POST | Add an article | yes |
 | /api/all-categories | GET | Retrieve all categories | - |
 | /api/show-all | GET | Retrieve all articles | - | 
