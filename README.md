@@ -9,8 +9,8 @@ Here you can find all endpoints related to the website [travel Bloggers](https:/
  This database is deployed on [Heroku](https://signup.heroku.com/login)
 
 # List of endpoints
-
-| Endpoint |Method  | Action | Member only | 
+ 
+##| Endpoint | Method  | Action | Member only | 
 |--|--|--|--|--|
 | /api/register | POST | Register a user | - |
 | /api/login | POST | Login a user | - |
@@ -30,6 +30,7 @@ Here you can find all endpoints related to the website [travel Bloggers](https:/
 | /api/my-favorites | GET | Retrieve all my favorites articles | yes | 
 | /api/{id}/like | POST | Add a like | yes | 
 | /api/{id}/dislike| DELETE | Delete a like | yes |
+
 
 # Author
 Myriam K.
