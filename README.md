@@ -9,8 +9,8 @@ Here you can find all endpoints related to the website [travel Bloggers](https:/
  This database is deployed on [Heroku](https://signup.heroku.com/login)
 
 # List of endpoints
- 
-| Endpoint | Method  | Action | Member only | 
+
+Endpoint | Method  | Action | Member only | 
 |--|--|--|--|--|
 | /api/register | POST | Register a user | - |
 | /api/login | POST | Login a user | - |
