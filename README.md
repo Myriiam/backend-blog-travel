@@ -4,9 +4,9 @@
 Here you can find all endpoints related to the website [travel Bloggers](https://vanyl.github.io/travelBloggers-frontend/#/). This is actually a Full-Stack group project (blog) about tips and ideas for travel lovers.
 
 # Technologies
- PHP framework : **Laravel** (with **Composer**)
- Database : **PostgreSQL**
- This database is deployed on [Heroku](https://signup.heroku.com/login)
+ - PHP framework : **Laravel** (with **Composer**)
+ - Database : **PostgreSQL**
+ - This database is deployed on [Heroku](https://signup.heroku.com/login)
 
 # List of endpoints
 
