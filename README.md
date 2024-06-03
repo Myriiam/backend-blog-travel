@@ -10,9 +10,9 @@ Here you can find all endpoints related to the website [travel Bloggers](https:/
 
 # List of endpoints
 
-Endpoint | Method  | Action | Member only | 
-|--|--|--|--|--
-| /api/register | POST | Register a user | - 
+| Endpoint | Method  | Action | Member only | 
+|--|--|--|--|
+| /api/register | POST | Register a user | - |
 | /api/login | POST | Login a user | - |
 | /api/logout| POST | logout a user| yes |
 | /api/add-article | POST | Add an article | yes |
